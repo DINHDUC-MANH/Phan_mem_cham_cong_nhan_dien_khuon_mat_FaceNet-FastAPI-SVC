@@ -40,3 +40,78 @@ async def get_complaint_image(path: str = None):
         return {"success": True, "image": image_base64}
     except Exception as e:
         return {"success": False, "message": f"Lỗi khi lấy ảnh: {str(e)}"}
+
+@router.post("/complaint", tags=["Complaint"])
+async def add_complaint(
+    image: UploadFile = File(...),
+    employee_id: int = Form(...),
+    reason: str = Form(...)
+):
+    try:
+        image_bytes = await image.read()
+        # Tạo tên file dựa trên thời gian
+        timestamp = int(time.time())
+        image_path = f"complaints/{employee_id}_{timestamp}.jpg"
+        
+        # Lưu ảnh vào database với tên file để có thể tìm lại sau này
+        complaint = Complaint(
+            employee_id=employee_id, 
+            reason=reason, 
+            image_data=image_bytes,
+            image_path=image_path
+        )
+        
+        session.add(complaint)
+        session.commit()
+        session.refresh(complaint)
+        
+        return {
+            "success": True,
+            "id": complaint.id,
+            "created_at": complaint.created_at.isoformat(),
+            "reason": complaint.reason,
+            "image_path": complaint.image_path
+        }
+    except Exception as e:
+        session.rollback()
+        return {
+            "success": False,
+            "message": f"Lỗi khi thêm khiếu nại: {str(e)}"
+        }
+
+@router.get("/complaint", tags=["Complaint"])
+async def get_complaints():
+    """Lấy danh sách tất cả khiếu nại"""
+    try:
+        complaints = session.query(Complaint).order_by(Complaint.created_at.desc()).all()
+        
+        result = []
+        for complaint in complaints:
+            employee = session.query(Employee).filter(Employee.id == complaint.employee_id).first()
+            
+            # Format ngày và giờ
+            date = complaint.created_at
+            complaint_date = date.strftime("%d-%m-%Y")
+            complaint_time = date.strftime("%H:%M:%S")
+            
+            result.append({
+                "id": complaint.id,
+                "employee_id": complaint.employee_id,
+                "employee_name": employee.name,
+                "complaint_date": complaint_date,
+                "complaint_time": complaint_time,
+                "reason": complaint.reason,
+                "image_path": complaint.image_path,
+                "status": "Đã duyệt" if complaint.processed else "Chưa duyệt",
+                "processed": complaint.processed
+            })
+        
+        return {
+            "success": True,
+            "complaints": result
+        }
+    except Exception as e:
+        return {
+            "success": False,
+            "message": f"Lỗi khi lấy danh sách khiếu nại: {str(e)}"
+        }
