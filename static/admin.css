@@ -1,0 +1,196 @@
+/* CSS chính cho trang admin */
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: transparent;
+  overflow-y: hidden;
+  max-height: 100vh;
+}
+
+header {
+  position: relative;
+  width: 100%;
+  padding: 20px;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding-top: 180px;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.header-left {
+  margin-left: 0;
+}
+
+.header-right {
+  display: flex;
+  gap: 10px;
+  align-self: flex-start;
+  margin-top: 10px;
+}
+
+.square-button {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(9, 6, 50, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-size: 1.6rem;
+  color: white;
+  text-decoration: none;
+}
+
+.add-button {
+  font-size: 1.8rem;
+  font-weight: bold;
+  line-height: 1;
+}
+
+.add-button:hover {
+  background-color: rgba(1, 76, 206, 0.5);
+}
+
+.power-button {
+  background-color: rgba(206, 1, 1, 0.3);
+}
+
+.power-button:hover {
+  background-color: rgba(206, 1, 1, 0.6);
+}
+
+.square-button:hover {
+  transform: scale(1.05);
+}
+
+.square-button img {
+  width: 20px;
+  height: 20px;
+  filter: invert(100%);
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: calc(100vh - 180px);
+  padding: 20px 20px 40px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+h1 {
+  text-align: left;
+  font-size: 2.4rem;
+  margin-bottom: 5px;
+  color: white;
+  text-shadow: 0 0 10px rgba(0, 123, 255, 0.7);
+  align-self: flex-start;
+  width: 100%;
+}
+
+.description {
+  color: white;
+  font-size: 1.4rem;
+  margin-top: 0;
+  margin-bottom: 10px;
+  text-shadow: 0 0 5px rgba(0, 123, 255, 0.7);
+  align-self: flex-start;
+  width: 100%;
+}
+
+.admin-content {
+  width: 100%;
+  background-color: rgba(9, 6, 50, 0.7);
+  border-radius: 5px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 0 20px rgba(1, 76, 206, 0.6);
+  overflow: hidden;
+  margin-bottom: 20px;
+  max-width: 1100px;
+  margin: 0 auto 20px auto;
+}
+
+.admin-tabs {
+  display: flex;
+  background-color: #1a2c44;
+  padding: 0;
+  margin: 0;
+}
+
+.tab {
+  flex: 1;
+  padding: 15px 0;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  transition: all 0.3s;
+  border-bottom: 3px solid transparent;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.tab:hover {
+  color: white;
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.tab.active {
+  color: white;
+  border-bottom: 3px solid #4a89dc;
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.tab-content {
+  width: 100%;
+  overflow: auto;
+}
+
+.tab-pane {
+  display: none;
+  padding: 20px;
+  width: 100%;
+  box-sizing: border-box;
+  max-height: calc(100vh - 140px);
+  overflow-y: auto;
+}
+
+.tab-pane.active {
+  display: block;
+}
+
+.wrapper {
+  background-color: transparent;
+  border: none;
+  padding: 0;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.wrapper h2 {
+  color: white;
+  font-size: 1.8rem;
+  margin-top: 0;
+  margin-bottom: 20px;
+  text-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+  padding-bottom: 10px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+  color: white;
+  table-layout: fixed;
+}
