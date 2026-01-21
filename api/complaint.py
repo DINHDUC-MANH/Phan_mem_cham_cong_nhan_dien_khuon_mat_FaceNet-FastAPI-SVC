@@ -15,7 +15,6 @@ class ComplaintProcessRequest(BaseModel):
     complaint_date: Optional[str] = None
     complaint_time: Optional[str] = None
 
-
 router = APIRouter()
 
 # @router.get("/complaint_image", tags=["Complaint"])
@@ -40,6 +39,7 @@ async def get_complaint_image(path: str = None):
         return {"success": True, "image": image_base64}
     except Exception as e:
         return {"success": False, "message": f"Lỗi khi lấy ảnh: {str(e)}"}
+
 
 @router.post("/complaint", tags=["Complaint"])
 async def add_complaint(
@@ -114,4 +114,47 @@ async def get_complaints():
         return {
             "success": False,
             "message": f"Lỗi khi lấy danh sách khiếu nại: {str(e)}"
+        }
+
+@router.delete("/complaint", tags=["Complaint"])
+async def delete_complaints():
+    session.query(Complaint).delete()
+    session.commit()
+
+@router.get("/complaint/{complaint_id}", tags=["Complaint"])
+async def get_complaint_detail(complaint_id: int):
+    """Lấy chi tiết một khiếu nại"""
+    try:
+        complaint = session.query(Complaint).filter(Complaint.id == complaint_id).first()
+        
+        if not complaint:
+            return {
+                "success": False,
+                "message": "Không tìm thấy khiếu nại"
+            }
+        
+        employee = session.query(Employee).filter(Employee.id == complaint.employee_id).first()
+        
+        # Format ngày và giờ
+        complaint_date = complaint.created_at.strftime("%d-%m-%Y")
+        complaint_time = complaint.created_at.strftime("%H:%M:%S")
+        
+        return {
+            "success": True,
+            "complaint": {
+                "id": complaint.id,
+                "employee_id": complaint.employee_id,
+                "employee_name": employee.name,
+                "complaint_date": complaint_date,
+                "complaint_time": complaint_time,
+                "reason": complaint.reason,
+                "image_path": complaint.image_path,
+                "status": "Đã duyệt" if complaint.processed else "Chưa duyệt",
+                "processed": complaint.processed
+            }
+        }
+    except Exception as e:
+        return {
+            "success": False,
+            "message": f"Lỗi khi lấy chi tiết khiếu nại: {str(e)}"
         }
