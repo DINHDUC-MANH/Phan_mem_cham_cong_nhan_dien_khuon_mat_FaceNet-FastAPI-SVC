@@ -27,4 +27,17 @@ async def delete_shift():
     session.query(Shift).delete()
     session.commit()
     return session.query(Shift).all()
-    
+
+@router.get("/shift", tags=["shift"])
+async def get_shifts():
+    """lấy danh sách tất cả ca làm việc"""
+    shifts = session.query(Shift).all()
+    result = []
+    for shift in shifts:
+        result.append({
+            "id": shift.id,
+            "name":shift.name, 
+            "checkin": time_to_string(shift.checkin),
+            "checkout": time_to_string(shift.checkout),
+        })
+    return {"shifts": result}
