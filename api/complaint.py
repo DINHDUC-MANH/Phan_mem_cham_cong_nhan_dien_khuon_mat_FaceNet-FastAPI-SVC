@@ -158,3 +158,46 @@ async def get_complaint_detail(complaint_id: int):
             "success": False,
             "message": f"Lỗi khi lấy chi tiết khiếu nại: {str(e)}"
         }
+@router.post("/complaint/process", tags=["Complaint"])
+async def process_complaint_json(request: ComplaintProcessRequest):
+    """API xử lý khiếu nại với JSON body (dùng cho admin dashboard)"""
+    try:
+        # Tìm khiếu nại trong DB
+        complaint = session.query(Complaint).filter(Complaint.id == request.complaint_id).first()
+        if not complaint:
+            return {"success": False, "message": "Không tìm thấy khiếu nại"}
+        
+        approved = request.action == 'approve'
+        
+        # Cập nhật trạng thái xử lý
+        complaint.processed = True
+        complaint.approved = approved
+        complaint.status = "Đã duyệt" if approved else "Không duyệt"
+
+        # Nếu duyệt khiếu nại, tạo bản ghi chấm công cho nhân viên
+        if approved:
+            # Lấy ngày từ complaint_time
+            complaint_date = complaint.created_at.strftime("%d-%m-%Y")
+            
+            # Kiểm tra xem đã có bản ghi chấm công cho nhân viên vào ngày này chưa
+            existing_attendance = session.query(Attendance).filter(
+                Attendance.employee_id == complaint.employee_id,
+                Attendance.date == complaint_date
+            ).first()
+                        
+            if existing_attendance:
+                # Nếu đã có, cập nhật thông tin check-in
+                existing_attendance.checkin = complaint.created_at.time()
+            else:
+                # Nếu chưa có, tạo bản ghi mới
+                # Xác định ca làm việc dựa vào thời gian
+                complaint_time_obj = complaint.created_at.time()
+                checkin(complaint.employee_id, complaint_time_obj, complaint_date)
+        # Lưu thay đổi vào DB
+        session.commit()
+        
+        return {"success": True, "message": "Xử lý khiếu nại thành công"}
+        
+    except Exception as e:
+        session.rollback()
+        return {"success": False, "message": f"Lỗi khi xử lý khiếu nại: {str(e)}"}
