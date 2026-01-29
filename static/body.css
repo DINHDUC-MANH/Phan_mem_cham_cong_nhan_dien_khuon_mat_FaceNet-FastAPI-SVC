@@ -1,0 +1,138 @@
+@import url("/static/css/fonts.css");
+@import url("/static/css/button.css");
+
+header > img {
+  width: 50px;
+  height: 50px;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  background: url("/static/images/bgr.png") no-repeat center center;
+  background-size: cover;
+}
+
+main {
+  margin-block: 50px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 50px;
+  flex-wrap: wrap;
+}
+
+main > section {
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
+}
+
+.left-section {
+  text-align: right;
+  align-items: end;
+  transform: perspective(600px) rotateY(15deg);
+}
+
+.left-section > p {
+  font-size: 2.5rem;
+  margin-top: 10px;
+  font-weight: lighter;
+}
+
+.right-section {
+  gap: 20px;
+  transform: perspective(600px) rotateY(-15deg);
+}
+
+canvas {
+  width: 800px;
+  height: 600px;
+  background-color: rgba(9, 6, 50, 0.637);
+  border-radius: 50px;
+  box-shadow: 0 0 200px 60px rgba(1, 76, 206, 0.6);
+}
+
+.canvas-section {
+  position: relative;
+  width: 800px;
+  text-align: center;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  opacity: 0;
+  justify-content: center;
+  visibility: hidden;
+  background-color: rgba(9, 6, 50, 0.4);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.2);
+  margin-top: 10px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 10px;
+}
+
+.progress {
+  width: 100%;
+  height: 100%;
+  background: rgb(255, 255, 255);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 5s linear;
+  border-radius: 10px;
+}
+
+@media (max-width: 640px) {
+  header,
+  footer {
+    display: none;
+  }
+
+  main {
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+  }
+
+  section {
+    text-align: center;
+  }
+
+  h1 {
+    font-size: 3rem;
+  }
+
+  canvas {
+    max-width: 100%;
+  }
+  .left-section {
+    transform: none;
+  }
+
+  .right-section {
+    transform: none;
+  }
+}
