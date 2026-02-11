@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/static/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="/static/css/index.css" />
+    <link rel="stylesheet" href="/static/css/body.css" />
+    <link rel="stylesheet" href="/static/css/train-form.css" />
+    <title>Hệ thống chấm công TLU</title>
+  </head>
+  <body>
+    <video autoplay muted loop plays-inline style="filter: brightness(160%)">
+      <source src="/static/videos/bg.mp4" type="video/mp4" />
+    </video>
+
+    <header>
+      <img src="/static/images/icon.png" alt="Icon" />
+    </header>
+
+    <main>
+      <section class="left-section">
+        <h1>Tạo nhân viên</h1>
+        <p id="description">Điền thông tin cá nhân</p>
+      </section>
+
+      <canvas
+        width="800px"
+        height="600px"
+        id="camera"
+        style="display: none"
+      ></canvas>
+
+      <div class="wrapper">
+        <form action="">
+          <h2>info</h2>
+          <div class="input-field">
+            <input type="text" required name="name" />
+            <label>Tên nhân viên</label>
+          </div>
+          <div class="input-field">
+            <input type="text" required name="position" />
+            <label>Vị trí làm việc</label>
+          </div>
+          <button id="submit-button" type="submit">Xác nhận</button>
+        </form>
+      </div>
+
+      <section class="right-section">
+        <a href="/">
+          <div class="button">
+            Chấm công
+            <p>Quay về mục chấm công</p>
+          </div>
+        </a>
+      </section>
+    </main>
+
+    <footer>
+      <h3>Luccihank x HieuCaoTlu</h3>
+    </footer>
+
+    <script src="/static/js/train.js" type="module"></script>
+  </body>
+</html>
