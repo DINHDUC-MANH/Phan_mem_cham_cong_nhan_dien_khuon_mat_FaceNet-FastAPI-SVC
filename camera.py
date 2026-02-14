@@ -189,74 +189,7 @@ def generate_train_camera(label):
         if result is not None:
             face, bbox = result
 
-        if bbox is not None and face is not None:
-            x1, y1 = bbox[0]
-            x2, y2 = bbox[2]
-            x1, y1 = int(x1 * SCALE), int(y1 * SCALE)
-            x2, y2 = int(x2 * SCALE), int(y2 * SCALE)
-            cv2.rectangle(image, (x1, y1), (x2, y2), (0, 255, 0), 2)
-
-            if frame_count % STEP == 0:
-                cropped_face = raw_image[y1:y2, x1:x2]
-                saved_faces.append(cropped_face)
-
-        cv2.putText(image, f"FPS: {fps:.2f}", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)        
         
-        if (curr_time - last_speak_time >= 2.5 or speak_count == 0) and speak_count < len(directions):
-            data["speech"] = directions[speak_count]
-            last_speak_time, speak_count = curr_time, speak_count + 1
-
-        if (curr_time - start_time >= APPLY_TRAIN - 0.2):
-            black_image = np.zeros((600, 800, 3), dtype=np.uint8)
-            _, buffer = cv2.imencode('.jpg', black_image)
-            if notice == True:
-                data["speech"] = "Đang xử lí"
-                notice = False
-        else:
-            _, buffer = cv2.imencode('.jpg', image, [cv2.IMWRITE_JPEG_QUALITY, QUALITY])
-        
-        data['image'] = base64.b64encode(buffer).decode('utf-8')
-        
-        if curr_time - start_time >= APPLY_TRAIN:
-            data["message"] = "Success"
-            print(len(saved_faces))
-            train(saved_faces, label)
-            training = False
-
-        yield f"data: {json.dumps(data)}\n\n"
-        frame_count += 1
-    stop_camera()
-
-def generate_complaint_camera():
-    global video_capture, QUALITY, latest_frame, thread_running
-    init_camera()
-    while latest_frame is None:
-        time.sleep(0.1) 
-    image = latest_frame.copy()
-    image = cv2.resize(latest_frame, (300, 200))
-    _, buffer = cv2.imencode('.jpeg', image)
-    frame_binary = base64.b64encode(buffer).decode('utf-8')
-    return frame_binary
-    
-def train_via_video(video_path, label):
-    global SCALE
-    cap = cv2.VideoCapture(video_path)
-    saved_faces = []
-    frame_count = 0
-    while True:
-        ret, frame = cap.read()
-        if not ret:
-            break
-
-        h, w = frame.shape[:2]
-        small_image = cv2.resize(frame, (w // SCALE, h // SCALE))
-        result = detect_face(small_image)
-        bbox = None
-        face = None
-
-        if result is not None:
-            face, bbox = result
-
         if bbox is not None and face is not None:
             x1, y1 = bbox[0]
             x2, y2 = bbox[2]
