@@ -88,3 +88,4 @@ async def logout(request: Request, response: Response):
     request.session.pop("admin_authenticated", None)
     response = RedirectResponse(url="/")
     return response 
+
