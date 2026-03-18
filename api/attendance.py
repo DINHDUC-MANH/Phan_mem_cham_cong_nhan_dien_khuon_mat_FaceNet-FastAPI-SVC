@@ -74,3 +74,9 @@ async def get_attendance(date: Optional[str] = None, shift_id: Optional[int] = N
                     "checkout_status": None,
                     "error": True  # Đánh dấu có lỗi
                 })
+        
+        print(f"Tìm thấy {len(attendance_list)} bản ghi chấm công")
+        return {"success": True, "attendance": attendance_list}
+    except Exception as e:
+        print(f"Lỗi khi lấy dữ liệu chấm công: {str(e)}")
+        return {"success": False, "message": f"Lỗi khi lấy dữ liệu chấm công: {str(e)}", "attendance": []}
