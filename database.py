@@ -93,3 +93,4 @@ Base.metadata.create_all(engine)
 # 🔹 Khởi tạo session
 Session = sessionmaker(bind=engine)
 session = Session()
+#ok
