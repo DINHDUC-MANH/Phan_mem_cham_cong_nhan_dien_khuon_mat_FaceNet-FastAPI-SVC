@@ -112,3 +112,4 @@ def augmentate(image):
     
     augmented_images = [augment(image) for augment in augmentations]
     return augmented_images
+#add
