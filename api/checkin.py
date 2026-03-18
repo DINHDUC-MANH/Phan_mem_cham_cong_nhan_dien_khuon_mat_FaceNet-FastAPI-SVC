@@ -20,3 +20,4 @@ async def delete_checkin():
     session.query(Attendance).delete()
     session.commit()
     return session.query(Attendance).all()
+
