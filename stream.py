@@ -16,3 +16,4 @@ async def stream_predict():
 @stream_router.get("/train", tags=["Camera"])
 async def stream_train(label: str = Query(..., description="Label for training")):
     return StreamingResponse(generate_train_camera(label), media_type="text/event-stream",  headers=headers)
+#up
