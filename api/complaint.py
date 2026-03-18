@@ -158,6 +158,7 @@ async def get_complaint_detail(complaint_id: int):
             "success": False,
             "message": f"Lỗi khi lấy chi tiết khiếu nại: {str(e)}"
         }
+        
 @router.post("/complaint/process", tags=["Complaint"])
 async def process_complaint_json(request: ComplaintProcessRequest):
     """API xử lý khiếu nại với JSON body (dùng cho admin dashboard)"""
