@@ -191,3 +191,4 @@ def predict(face, threshold=0.6):
     else:
         predicted_label = ""
     return predicted_label
+#capnhat
